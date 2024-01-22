@@ -1,16 +1,27 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ItemService } from "../api/api";
 import Modal from "react-bootstrap/Modal";
+
+
+import { ItemService } from "../api/api";
 import Example from "./EditModal";
 
 function Home() {
-  const [items, setItems] = useState([]);
+  const [getitems, setGetItems] = useState([]);
   const [item, setItem] = useState([]);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const [shouldFetch, setShouldFetch] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const recordsPerPage = 5;
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const records = getitems.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(getitems.length / recordsPerPage);
+  const numbers = [...Array(npage + 1).keys()].slice(1)
+  
 
   const handleShow = (item) => {
     setItem(item);
@@ -20,7 +31,7 @@ function Home() {
   const getData = async () => {
     try {
       const response = await ItemService.getAllItems();
-      setItems(response);
+      setGetItems(response);
     } catch (error) {
       console.log(error);
     }
@@ -35,8 +46,8 @@ function Home() {
 
   const handleDelete = async (id) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await ItemService.deleteItem(id);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +58,19 @@ function Home() {
     window.location.href = "./";
     localStorage.clear();
   };
+  const prevPage = () => {
+    if(currentPage !== 1){
+      setCurrentPage(currentPage -1)
+    }
+  }
+  const changeCurrPage = (id) => {
+    setCurrentPage(id)
+  }
+  const nextPage = () => {
+    if(currentPage !== npage){
+      setCurrentPage(currentPage + 1)
+    }
+  }
   return (
     <div className="d-flex vh-100 align-items-center justify-content-center bg-secondary">
       <div className="container-fluid bg-white p-3 rounded">
@@ -70,10 +94,10 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => {
+            {records.map((item) => {
               return (
                 <>
-                  <tr>
+                <tr>
                     <td>{item.item}</td>
                     <td>{item.stocks}</td>
                     <td>{item.price}</td>
@@ -89,7 +113,6 @@ function Home() {
                         className="btn btn-danger btn-lg"
                         style={{ marginLeft: "5px" }}
                         onClick={() => handleDelete(item._id)}
-                        
                       >
                         Delete
                       </button>
@@ -100,6 +123,23 @@ function Home() {
             })}
           </tbody>
         </table>
+        <nav className="d-flex align-items-center justify-content-center">
+          <ul className="pagination">
+            <li className="page-item">
+                <a href="#" className="page-link" onClick={prevPage}>Previous</a>
+            </li>
+            {
+              numbers.map((n, i) => (
+                <li className={`page-item ${currentPage === n ? 'active': ''}`} key={i}>
+                  <a href="#" className="page-link" onClick={()=>changeCurrPage(n)}>{n}</a>
+                </li>
+              ))
+            }
+            <li className="page-item">
+                <a href="#" className="page-link" onClick={nextPage}>Next</a>
+            </li>
+          </ul>
+        </nav>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

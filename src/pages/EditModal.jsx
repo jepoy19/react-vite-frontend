@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+
 import { ItemService } from "../api/api";
+
 function UpdateItem({ itemData }) {
   const [item, setItem] = useState(itemData.item);
   const [stocks, setStocks] = useState(itemData.stocks);

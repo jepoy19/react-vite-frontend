@@ -3,8 +3,8 @@ import axios from "axios";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV || "development";
 
 const uri = {
-  development: import.meta.env.VITE_ENDPOINT,
-  production: import.meta.env.VITE_API_URL,
+  development: import.meta.env.VITE_API_DEVELOPMENT,
+  production: import.meta.env.VITE_API_PRODUCTION,
 };
 
 const request = axios.create({
@@ -60,9 +60,9 @@ export const ItemService = {
       console.log(error)
     }
   },
-  register : async(name, email, password) => {
+  register : async(params) => {
     try {
-      const result = await request.post('/user/', name, email, password)
+      const result = await request.post('/user/', params)
       return result.data
     } catch (error) {
       console.log(error)

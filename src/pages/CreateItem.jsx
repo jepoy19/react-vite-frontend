@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ItemService } from "../api/api";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+
+import { ItemService } from "../api/api";
 
 function CreateItem() {
   const [item, setItem] = useState();
@@ -25,23 +26,12 @@ function CreateItem() {
     if(validated){
       try {
         const result = await ItemService.createItem({ item, stocks, price });
-        console.log(result);
+        alert("Product " + result.item + " added.")
         navigate("/home")
       } catch (error) {
         console.log(error);
       }
     }
-
-    // const addItems = async () => {
-    //   try {
-    //     const result = await ItemService.createItem({ item, stocks, price });
-    //     return result.data;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // navigate("/home");
-    // addItems();
   };
   return (
     <div className="d-flex vh-100 align-items-center justify-content-center" style={{ backgroundColor: "#092635" }}>
@@ -93,7 +83,7 @@ function CreateItem() {
               </Form.Control.Feedback>
             </Form.Group>
           </Row>
-          <button className="btn btn-success" >Submit</button>
+          <button className="btn btn-success">Submit</button>
           </Form>
       </div>
     </div>
