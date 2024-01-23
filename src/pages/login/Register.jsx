@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-import { ItemService } from "../../api/api";
+import { UserService } from "../../api/User-Service";
 
 function Register() {
   const [name, setName] = useState();
@@ -15,7 +15,7 @@ function Register() {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
-  const registerData = {name, email, password}
+  const registerData = { name, email, password };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -27,15 +27,13 @@ function Register() {
 
     setValidated(true);
 
-    
-      try {
-        const result = await ItemService.register(registerData);
-        alert("Account " + result.name + "Created")
-        navigate("/");
-      } catch (error) {
-        console.log(error);
-      }
-    
+    try {
+      const result = await UserService.register(registerData);
+      alert("Account " + result.name + "Created");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div

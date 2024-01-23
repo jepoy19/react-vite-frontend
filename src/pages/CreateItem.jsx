@@ -4,7 +4,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-import { ItemService } from "../api/api";
+import { ItemService } from "../api/Item-Service";
 
 function CreateItem() {
   const [item, setItem] = useState();

@@ -48,24 +48,5 @@ export const ItemService = {
     } catch (error) {
       console.log(error);
     }
-  },
-  logIn: async (email, password) => {
-    try {
-      const result = await request.post('/login/', email, password)
-      if(result.data === "Success"){
-        return true
-      }
-      return false
-    } catch (error) {
-      console.log(error)
-    }
-  },
-  register : async(params) => {
-    try {
-      const result = await request.post('/user/', params)
-      return result.data
-    } catch (error) {
-      console.log(error)
-    }
   }
 };

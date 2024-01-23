@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { ItemService } from "../../api/api";
+import { UserService } from "../../api/User-Service";
 
 const Login = () => {
   const [email, setEmail] = useState();
@@ -15,7 +15,7 @@ const Login = () => {
     e.preventDefault();
     localStorage.setItem("token", token);
     try {
-      const result = await ItemService.logIn({ email, password });
+      const result = await UserService.logIn({ email, password });
       if (result) {
         navigate("/home");
       } else {

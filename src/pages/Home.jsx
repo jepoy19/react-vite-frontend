@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 
-
-import { ItemService } from "../api/api";
+import { ItemService } from "../api/Item-Service";
 import Example from "./EditModal";
 
 function Home() {
@@ -14,14 +13,13 @@ function Home() {
   const handleClose = () => setShow(false);
   const [shouldFetch, setShouldFetch] = useState(true);
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const recordsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 3;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
   const records = getitems.slice(firstIndex, lastIndex);
   const npage = Math.ceil(getitems.length / recordsPerPage);
-  const numbers = [...Array(npage + 1).keys()].slice(1)
-  
+  const numbers = [...Array(npage + 1).keys()].slice(1);
 
   const handleShow = (item) => {
     setItem(item);
@@ -53,24 +51,30 @@ function Home() {
     }
     getData();
   };
+
+
   const logOut = () => {
     alert("Are you sure you want to log out?");
     window.location.href = "./";
     localStorage.clear();
   };
+
   const prevPage = () => {
-    if(currentPage !== 1){
-      setCurrentPage(currentPage -1)
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
     }
-  }
+  };
+
   const changeCurrPage = (id) => {
-    setCurrentPage(id)
-  }
+    setCurrentPage(id);
+  };
+
   const nextPage = () => {
-    if(currentPage !== npage){
-      setCurrentPage(currentPage + 1)
+    if (currentPage !== npage) {
+      setCurrentPage(currentPage + 1);
     }
-  }
+  };
+
   return (
     <div className="d-flex vh-100 align-items-center justify-content-center bg-secondary">
       <div className="container-fluid bg-white p-3 rounded">
@@ -95,13 +99,24 @@ function Home() {
           </thead>
           <tbody>
             {records.map((item) => {
+              function numberFormat(number) {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              }
+              const totalPrice = item.price * item.stocks;
+              const formatedPrice = numberFormat(item.price);
+              const formatedTotalPrice = numberFormat(totalPrice);
+              const currency = "₱";
               return (
                 <>
-                <tr>
+                  <tr>
                     <td>{item.item}</td>
                     <td>{item.stocks}</td>
-                    <td>{item.price}</td>
-                    <td>{item.price * item.stocks}</td>
+                    <td>
+                      {currency} {formatedPrice}
+                    </td>
+                    <td>
+                      {currency} {formatedTotalPrice}
+                    </td>
                     <td>
                       <button
                         className="btn btn-success btn-lg gap-3 mx-2"
@@ -126,17 +141,28 @@ function Home() {
         <nav className="d-flex align-items-center justify-content-center">
           <ul className="pagination">
             <li className="page-item">
-                <a href="#" className="page-link" onClick={prevPage}>Previous</a>
+              <a href="#" className="page-link" onClick={prevPage}>
+                Previous
+              </a>
             </li>
-            {
-              numbers.map((n, i) => (
-                <li className={`page-item ${currentPage === n ? 'active': ''}`} key={i}>
-                  <a href="#" className="page-link" onClick={()=>changeCurrPage(n)}>{n}</a>
-                </li>
-              ))
-            }
+            {numbers.map((n, i) => (
+              <li
+                className={`page-item ${currentPage === n ? "active" : ""}`}
+                key={i}
+              >
+                <a
+                  href="#"
+                  className="page-link"
+                  onClick={() => changeCurrPage(n)}
+                >
+                  {n}
+                </a>
+              </li>
+            ))}
             <li className="page-item">
-                <a href="#" className="page-link" onClick={nextPage}>Next</a>
+              <a href="#" className="page-link" onClick={nextPage}>
+                Next
+              </a>
             </li>
           </ul>
         </nav>
