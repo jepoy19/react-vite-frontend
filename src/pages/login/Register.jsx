@@ -35,6 +35,7 @@ function Register() {
       console.log(error);
     }
   };
+  
   return (
     <div
       className="d-flex vh-100 align-items-center justify-content-center "

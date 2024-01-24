@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 
 import { ItemService } from "../api/Item-Service";
-import Example from "./EditModal";
+import UpdateItem from "./EditModal";
 
 function Home() {
   const [getitems, setGetItems] = useState([]);
   const [item, setItem] = useState([]);
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
   const [shouldFetch, setShouldFetch] = useState(true);
+  const handleClose = () => setShow(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 3;
@@ -21,6 +21,7 @@ function Home() {
   const npage = Math.ceil(getitems.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
+  
   const handleShow = (item) => {
     setItem(item);
     setShow(true);
@@ -51,7 +52,6 @@ function Home() {
     }
     getData();
   };
-
 
   const logOut = () => {
     alert("Are you sure you want to log out?");
@@ -89,7 +89,7 @@ function Home() {
         </Link>
         <table className="table  table-info table-striped-columns mx-auto text-center fs-4">
           <thead>
-            <tr>
+            <tr key={item._id}>
               <th scope="col">Item</th>
               <th scope="col">Available Stocks</th>
               <th scope="col">Price</th>
@@ -98,7 +98,7 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            {records.map((item) => {
+            {records.map((item) => {  
               function numberFormat(number) {
                 return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
               }
@@ -108,14 +108,16 @@ function Home() {
               const currency = "₱";
               return (
                 <>
-                  <tr>
+                  <tr key={item._id}>
                     <td>{item.item}</td>
                     <td>{item.stocks}</td>
                     <td>
-                      {currency} {formatedPrice}
+                      {currency}
+                      {formatedPrice}
                     </td>
                     <td>
-                      {currency} {formatedTotalPrice}
+                      {currency}
+                      {formatedTotalPrice}
                     </td>
                     <td>
                       <button
@@ -172,10 +174,12 @@ function Home() {
           <Modal.Title>Update Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Example itemData={item} />
+          <UpdateItem itemData={item} />
         </Modal.Body>
       </Modal>
+    
     </div>
   );
+  
 }
 export default Home;
