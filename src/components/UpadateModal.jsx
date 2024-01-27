@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { ItemService } from "../api/Item-Service";
 
-function UpdateItem({ itemData }) {
+function UpdateModal({ itemData }) {
   const [item, setItem] = useState(itemData.item);
   const [stocks, setStocks] = useState(itemData.stocks);
   const [price, setPrice] = useState(itemData.price);
@@ -11,13 +11,14 @@ function UpdateItem({ itemData }) {
   const payload = { id: itemData._id, item, stocks, price };
   const Update = async () => {
     try {
-      const response = await ItemService.updateItem(payload);
+      const response = await ItemService.UpdateModal(payload);
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
+  
   return (
     <form onSubmit={Update}>
       <div className="mb-3 fs-3">
@@ -65,4 +66,4 @@ function UpdateItem({ itemData }) {
     </form>
   );
 }
-export default UpdateItem;
+export default UpdateModal;

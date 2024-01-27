@@ -31,7 +31,7 @@ export const ItemService = {
       throw err;
     }
   },
-  updateItem: async (params) => {
+  UpdateModal: async (params) => {
     try {
       const response = await request.patch(`/item/${params.id}`, params);
       console.log(response.data);
@@ -48,5 +48,5 @@ export const ItemService = {
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 };

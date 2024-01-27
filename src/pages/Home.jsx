@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 
 import { ItemService } from "../api/Item-Service";
-import UpdateItem from "./EditModal";
+import UpdateModal from "../components/UpadateModal";
 
 function Home() {
   const [getitems, setGetItems] = useState([]);
@@ -13,15 +13,18 @@ function Home() {
   const [shouldFetch, setShouldFetch] = useState(true);
   const handleClose = () => setShow(false);
 
+  const [pageDisplay, setPageDisplay] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 3;
+  const recordsPerPage = pageDisplay;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
   const records = getitems.slice(firstIndex, lastIndex);
   const npage = Math.ceil(getitems.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
-  
+  console.log("%c Line:25 🍏", "color:#7f2b82", item);
+
+
   const handleShow = (item) => {
     setItem(item);
     setShow(true);
@@ -45,8 +48,8 @@ function Home() {
 
   const handleDelete = async (id) => {
     try {
-      // eslint-disable-next-line no-unused-vars
       const response = await ItemService.deleteItem(id);
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +87,22 @@ function Home() {
         >
           Log Out
         </button>
+        <div className="input-group mb-3  ">
+          <label className="input-group-text" htmlFor="inputGroupSelect01">
+            Show Pages
+          </label>
+          <select
+            className="form-select-sm"
+            selected
+            id="inputGroupSelect01"
+            onChange={(e) => setPageDisplay(e.target.value)}
+            value={pageDisplay}
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
         <Link to="/create" className="btn btn-primary m-3 btn-lg mx-auto">
           Add Item
         </Link>
@@ -98,14 +117,14 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            {records.map((item) => {  
+            {records.map((item) => {
               function numberFormat(number) {
                 return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
               }
-              const totalPrice = item.price * item.stocks;
+
               const formatedPrice = numberFormat(item.price);
-              const formatedTotalPrice = numberFormat(totalPrice);
-              const currency = "₱";
+              const formatedTotal = numberFormat(item.totalPrice);
+              const currency = "₱ ";
               return (
                 <>
                   <tr key={item._id}>
@@ -117,7 +136,7 @@ function Home() {
                     </td>
                     <td>
                       {currency}
-                      {formatedTotalPrice}
+                      {formatedTotal}
                     </td>
                     <td>
                       <button
@@ -174,12 +193,10 @@ function Home() {
           <Modal.Title>Update Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <UpdateItem itemData={item} />
+          <UpdateModal itemData={item} />
         </Modal.Body>
       </Modal>
-    
     </div>
   );
-  
 }
 export default Home;

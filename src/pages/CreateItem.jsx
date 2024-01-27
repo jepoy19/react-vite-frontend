@@ -74,7 +74,6 @@ function CreateItem() {
                 size="lg"
                 required
                 type="number"
-                
                 onChange={(e) => setPrice(e.target.value)}
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>

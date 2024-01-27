@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Nav = () => {
   return (
     <nav
-      style={{ textAlign: "center", padding: "10px" }}
+      style={{ textAlign: "start", padding: "10px",}}
       className="bg-secondary fs-5 fw-semibold "
     >
       <Link
@@ -26,6 +26,13 @@ const Nav = () => {
         className="text-decoration-none"
       >
         Register
+      </Link>
+      <Link
+        to="/table"
+        style={{ padding: "10px", color: "white" }}
+        className="text-decoration-none"
+      >
+        Table
       </Link>
     </nav>
   );
